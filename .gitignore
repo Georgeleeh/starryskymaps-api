@@ -1,2 +1,5 @@
 __*/
 venv/
+Etsy/
+app/database.sqlite3
+.env
