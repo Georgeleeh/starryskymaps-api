@@ -12,6 +12,15 @@ class Buyer(db.Model):
 
     def __repr__(self):
         return f'<Buyer {self.id}>'
+    
+    @property
+    def dict(self):
+        return {
+            'id': self.id,
+            'etsy_email': self.etsy_email,
+            'updated_email': self.updated_email,
+            'transactions': [t.id for t in self.transactions]
+        }
 
 
 class Transaction(db.Model):
@@ -41,6 +50,19 @@ class Transaction(db.Model):
 
     def __repr__(self):
         return f'<Transaction {self.id}>'
+    
+    @property
+    def dict(self):
+        return {
+            'id': self.id,
+            'timestamp': self.timestamp,
+            'sku': self.sku,
+            'receipt_id': self.receipt_id,
+            'quantity': self.quantity,
+            'shipped': self.shipped,
+            'buyer_id': self.buyer_id,
+            'posters': [p.id for p in self.posters]
+        }
 
 
 class Poster(db.Model):
@@ -66,6 +88,15 @@ class Poster(db.Model):
 
     def __repr__(self):
         return f'<Poster {self.id}>'
+    
+    @property
+    def dict(self):
+        return {
+            'id': self.id,
+            'sent': self.sent,
+            'transaction_id': self.transaction_id,
+            'response_id': self.response.id if self.response is not None else None
+        }
 
 
 class Response(db.Model):
