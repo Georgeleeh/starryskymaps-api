@@ -96,7 +96,7 @@ def get_transaction(transaction_id):
                 db.session.delete(r)
 
         db.session.commit()
-        return {'success' : 'Blogpost deleted'}, 200
+        return {'success' : 'Transaction and orphaned dependents deleted'}, 200
 
 
 # ---------------------------------- POSTER ---------------------------------- #
