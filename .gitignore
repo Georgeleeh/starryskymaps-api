@@ -3,3 +3,4 @@ venv/
 Etsy/
 app/database.sqlite3
 .env
+.DS_Store
