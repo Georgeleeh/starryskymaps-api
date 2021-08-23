@@ -94,7 +94,7 @@ def all_transactions():
         return jsonify([t.id for t in added]), 200
 
 @app.route('/transaction/<transaction_id>', methods=['GET', 'PUT', 'DELETE'])
-def get_transaction(transaction_id):
+def transaction(transaction_id):
     # Return specified Transaction as dict
     if request.method == 'GET':
         t = Transaction.query.filter_by(id=transaction_id).first()
@@ -137,7 +137,7 @@ def all_posters():
         return jsonify([p.dict for p in ps]), 200
 
 @app.route('/poster/<poster_id>', methods=['GET'])
-def get_poster(poster_id):
+def poster(poster_id):
     # Return specified Poster as dict
     if request.method == 'GET':
         p = Poster.query.filter_by(id=poster_id).first()
@@ -154,7 +154,7 @@ def all_responses():
         return jsonify([r.dict for r in rs]), 200
 
 @app.route('/response/<response_id>', methods=['GET'])
-def get_response(response_id):
+def response(response_id):
     # Return specified Response as dict
     if request.method == 'GET':
         r = Response.query.filter_by(id=response_id).first()
