@@ -68,7 +68,9 @@ class Transaction(db.Model):
 class Poster(db.Model):
     # Primary Key
     id = db.Column(db.Integer, primary_key=True)
+    image = db.Column(db.String(50), unique=False, nullable=True)
     # Status Booleans
+    made = db.Column(db.Boolean, unique=False, nullable=False, default=False)
     sent = db.Column(db.Boolean, unique=False, nullable=False, default=False)
     # Relationships
     transaction_id = db.Column(db.Integer, db.ForeignKey('transaction.id'), nullable=False)
@@ -93,6 +95,8 @@ class Poster(db.Model):
     def dict(self):
         return {
             'id': self.id,
+            'image': self.image,
+            'made': self.made,
             'sent': self.sent,
             'transaction_id': self.transaction_id,
             'response_id': self.response.id if self.response is not None else None
