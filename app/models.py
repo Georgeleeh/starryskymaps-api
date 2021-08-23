@@ -70,6 +70,7 @@ class Poster(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     image = db.Column(db.String(50), unique=False, nullable=True)
     # Status Booleans
+    responded = db.Column(db.Boolean, unique=False, nullable=False, default=False)
     made = db.Column(db.Boolean, unique=False, nullable=False, default=False)
     sent = db.Column(db.Boolean, unique=False, nullable=False, default=False)
     # Relationships
