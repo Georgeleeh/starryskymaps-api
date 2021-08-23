@@ -65,11 +65,22 @@ def get_buyer(buyer_id):
 
 # ---------------------------------- TRANSACTION ---------------------------------- #
 
-@app.route('/transaction', methods=['GET'])
+@app.route('/transaction', methods=['GET', 'PUT'])
 def all_transactions():
     if request.method == 'GET':
         ts = Transaction.query.all()
         return jsonify([t.dict for t in ts]), 200
+        
+    elif request.method == 'PUT':
+        added = []
+        E = Etsy()
+        etsy_open_transactions = E.get_open_transactions()
+        for etsy_transaction in etsy_open_transactions.values():
+            query = Transaction.query.filter_by(id=etsy_transaction['transaction_id']).first()
+            if query is None:
+                t = add_transaction_and_others(etsy_transaction, E=E)
+                added.append(t)
+        return jsonify([t.id for t in added]), 200
 
 @app.route('/transaction/<transaction_id>', methods=['GET', 'PUT', 'DELETE'])
 def get_transaction(transaction_id):

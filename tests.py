@@ -52,6 +52,12 @@ def test(url, method, response_code, json=None):
 base_url = get_base_url()
 
 
+# Put all transactions
+print('Put all transactions\n')
+put_transactions = test(base_url+f'/transaction', 'put', 200) # Correct request
+print(f'All transactions: {put_transactions}')
+print()
+
 # Get all transactions
 print('Get all transactions\n')
 all_transactions = test(base_url+f'/transaction', 'get', 200) # Correct request
