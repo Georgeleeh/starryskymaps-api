@@ -64,6 +64,12 @@ all_transactions = test(base_url+f'/transaction', 'get', 200) # Correct request
 print(f'All transactions: {[t["id"] for t in all_transactions]}')
 print()
 
+# Get all transactions
+print('Get all open transactions\n')
+all_open_transactions = test(base_url+f'/transaction/open', 'get', 200) # Correct request
+print(f'All transactions: {[t["id"] for t in all_open_transactions]}')
+print()
+
 # Get all buyers
 print('Get all buyers\n')
 all_buyers =test(base_url+f'/buyer', 'get', 200) # Correct request

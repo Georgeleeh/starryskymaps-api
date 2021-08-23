@@ -93,6 +93,13 @@ def all_transactions():
         # Return ids of added Transactions
         return jsonify([t.id for t in added]), 200
 
+@app.route('/transaction/open', methods=['GET'])
+def all_open_transactions():
+    # Return all transactions as dicts
+    if request.method == 'GET':
+        ts = Transaction.query.filter_by(shipped=False).all()
+        return jsonify([t.dict for t in ts]), 200
+
 @app.route('/transaction/<transaction_id>', methods=['GET', 'PUT', 'DELETE'])
 def transaction(transaction_id):
     # Return specified Transaction as dict
