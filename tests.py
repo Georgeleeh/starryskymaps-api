@@ -1,3 +1,4 @@
+from os import putenv
 import requests
 import argparse
 from datetime import datetime
@@ -93,6 +94,19 @@ print()
 # Get poster
 print(f"Get poster {poster_id}\n")
 r = test(base_url+f"/poster/{poster_id}", 'get', 200) # Correct request
+print()
+
+put_transaction_id = 2579003080
+
+# Put transaction
+print(f'Put transaction {put_transaction_id}\n')
+put_transaction = test(base_url+f'/transaction/{put_transaction_id}', 'put', 200) # Correct request
+print(f'Put transaction: {put_transaction}')
+print()
+
+# Delete transaction
+print(f'Delete transaction {put_transaction_id}\n')
+put_transaction = test(base_url+f'/transaction/{put_transaction_id}', 'delete', 200) # Correct request
 print()
 
 print('All good, G!')
