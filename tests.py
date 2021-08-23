@@ -108,6 +108,11 @@ print(f"Get poster {poster_id}\n")
 r = test(base_url+f"/poster/{poster_id}", 'get', 200) # Correct request
 print()
 
+# Get poster response
+print(f"Get poster response {poster_id}\n")
+r = test(base_url+f"/poster/{poster_id}/response", 'get', 200) # Correct request
+print()
+
 put_transaction_id = 2579003080
 
 # Put transaction

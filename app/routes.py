@@ -150,6 +150,16 @@ def poster(poster_id):
         p = Poster.query.filter_by(id=poster_id).first()
         return jsonify(p.dict), 200
 
+@app.route('/poster/<poster_id>/response', methods=['GET'])
+def poster_response(poster_id):
+    # Return Response for specified Poster as dict
+    if request.method == 'GET':
+        p = Poster.query.filter_by(id=poster_id).first()
+        if p.response is None:
+            return {'success' : 'Request succeeded but Poster Response is None.'}, 200
+        else:
+            return jsonify(p.response), 200
+
 
 # ---------------------------------- RESPONSE ---------------------------------- #
 
