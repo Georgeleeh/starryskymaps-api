@@ -19,8 +19,9 @@ class Buyer(db.Model):
             'id': self.id,
             'etsy_email': self.etsy_email,
             'updated_email': self.updated_email,
-            'contact_email': self.updated_email if self.updated_email is not None else self.etsy_email,
-            'transactions': [t.id for t in self.transactions]
+            'transactions': [t.id for t in self.transactions],
+            # Extra properties worth returning
+            'contact_email': self.updated_email if self.updated_email is not None else self.etsy_email
         }
 
 
