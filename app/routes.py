@@ -150,7 +150,8 @@ def poster(poster_id):
         p = Poster.query.filter_by(id=poster_id).first()
         return jsonify(p.dict), 200
 
-@app.route('/poster/<poster_id>/response', methods=['GET'])
+# TODO add POST method
+@app.route('/poster/<poster_id>/response', methods=['GET', 'POST'])
 def poster_response(poster_id):
     # Return Response for specified Poster as dict
     if request.method == 'GET':
@@ -158,7 +159,34 @@ def poster_response(poster_id):
         if p.response is None:
             return {'success' : 'Request succeeded but Poster Response is None.'}, 200
         else:
-            return jsonify(p.response), 200
+            return jsonify(p.response.dict), 200
+    
+    if request.method == 'POST':
+        p = Poster.query.filter_by(id=poster_id).first()
+        if p.response is None:
+            response_data = request.get_json()
+            r = Response(
+                timestamp = datetime.now(),
+                map_datetime = datetime.fromtimestamp(response_data['map_datetime']),
+                map_written_datetime = response_data['map_written_datetime'],
+                message = response_data['message'],
+                map_written_address = response_data['map_written_address'],
+                size = response_data['size'],
+                latitude = response_data['latitude'],
+                longitude = response_data['longitude'],
+                colour = response_data['colour'],
+                font = response_data['font'],
+                show_conlines = response_data.get('show_conlines'),
+                map_background = response_data.get('map_background'),
+            )
+
+            p.response = r
+            db.session.add(p)
+            db.session.add(r)
+            db.session.commit()
+            return jsonify(r.dict), 200
+        else:
+            return {'error': 'Response exists, please use PATCH instead.'}, 409
 
 
 # ---------------------------------- RESPONSE ---------------------------------- #

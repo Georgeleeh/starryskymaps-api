@@ -105,7 +105,7 @@ print()
 
 # Get poster
 print(f"Get poster {poster_id}\n")
-r = test(base_url+f"/poster/{poster_id}", 'get', 200) # Correct request
+gotten_poster = test(base_url+f"/poster/{poster_id}", 'get', 200) # Correct request
 print()
 
 # Get poster response
@@ -125,5 +125,33 @@ print()
 print(f'Delete transaction {put_transaction_id}\n')
 put_transaction = test(base_url+f'/transaction/{put_transaction_id}', 'delete', 200) # Correct request
 print()
+
+post_response = {
+            'map_datetime': datetime(2020, 1, 1).timestamp(),
+            'map_written_datetime': '1st Jan 2020',
+            'message': 'test message',
+            'map_written_address': 'my house',
+            'size': '8x10',
+            'latitude': 1.0,
+            'longitude': 2.0,
+            'colour': 'White',
+            'font': 'Amatic SC'
+            }
+
+if gotten_poster['response_id'] is None:
+
+    # Post response
+    print(f'Post response for poster {poster_id}\n')
+    posted_response = test(base_url+f'/poster/{poster_id}/response', 'post', 200, json=post_response) # Correct request
+    print(f'Put response: {posted_response}')
+    print()
+
+else:
+
+    # Post response
+    print(f'Post response for poster {poster_id}\n')
+    posted_response = test(base_url+f'/poster/{poster_id}/response', 'post', 409, json=post_response) # Correct request
+    print(f'Server reply: {posted_response}')
+    print()
 
 print('All good, G!')
