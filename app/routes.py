@@ -3,6 +3,7 @@ from app.models import *
 from flask import jsonify, request
 from datetime import datetime
 from Etsy import Etsy
+import sqlalchemy
 
 
 @app.route('/')
@@ -151,7 +152,7 @@ def poster(poster_id):
         return jsonify(p.dict), 200
 
 # TODO add POST method
-@app.route('/poster/<poster_id>/response', methods=['GET', 'POST'])
+@app.route('/poster/<poster_id>/response', methods=['GET', 'POST', 'PATCH'])
 def poster_response(poster_id):
     # Return Response for specified Poster as dict
     if request.method == 'GET':
@@ -187,6 +188,26 @@ def poster_response(poster_id):
             return jsonify(r.dict), 200
         else:
             return {'error': 'Response exists, please use PATCH instead.'}, 409
+    
+    if request.method == 'PATCH':
+        p = Poster.query.filter_by(id=poster_id).first()
+        response_id = p.response.id
+
+        # Use request json to update multiple columns simultaneously for one response
+        try:
+            Response.query.filter_by(id=response_id).update(request.get_json())
+        except sqlalchemy.exc.InvalidRequestError:
+            return {'error' : 'Column does not exist'}, 406
+
+        db.session.commit()
+
+        # Get revised blogpost so it can be returned
+        r = Response.query.filter_by(id=response_id).first()
+    
+        if r is None:
+            return {'error' : 'Response not found'}, 404
+
+        return jsonify(r.dict), 200
 
 
 # ---------------------------------- RESPONSE ---------------------------------- #
