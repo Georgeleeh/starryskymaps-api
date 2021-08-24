@@ -127,3 +127,22 @@ class Response(db.Model):
 
     def __str__(self):
         return f'<Response {self.id}, poster_id={self.poster_id}>'
+    
+    @property
+    def dict(self):
+        return {
+            'id': self.id,
+            'timestamp': self.timestamp,
+            'map_datetime': self.map_datetime,
+            'map_written_datetime': self.map_written_datetime,
+            'message': self.message,
+            'map_written_address': self.map_written_address,
+            'size': self.size,
+            'latitude': self.latitude,
+            'longitude': self.longitude,
+            'colour': self.colour,
+            'font': self.font,
+            'show_conlines': self.show_conlines,
+            'map_background': self.map_background,
+            'poster_id': self.poster_id,
+        }
