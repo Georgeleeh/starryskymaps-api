@@ -151,7 +151,6 @@ def poster(poster_id):
         p = Poster.query.filter_by(id=poster_id).first()
         return jsonify(p.dict), 200
 
-# TODO add POST method
 @app.route('/poster/<poster_id>/response', methods=['GET', 'POST', 'PATCH'])
 def poster_response(poster_id):
     p = Poster.query.filter_by(id=poster_id).first()
