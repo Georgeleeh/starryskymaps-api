@@ -154,17 +154,20 @@ def poster(poster_id):
 # TODO add POST method
 @app.route('/poster/<poster_id>/response', methods=['GET', 'POST', 'PATCH'])
 def poster_response(poster_id):
+    p = Poster.query.filter_by(id=poster_id).first()
+
     # Return Response for specified Poster as dict
     if request.method == 'GET':
-        p = Poster.query.filter_by(id=poster_id).first()
         if p.response is None:
             return {'success' : 'Request succeeded but Poster Response is None.'}, 200
         else:
             return jsonify(p.response.dict), 200
     
     if request.method == 'POST':
-        p = Poster.query.filter_by(id=poster_id).first()
+        # Add a Response to the specified Poster and commit to db
+        # First check if Poster already has Response
         if p.response is None:
+            # Create the Response from the request json
             response_data = request.get_json()
             r = Response(
                 timestamp = datetime.now(),
@@ -180,20 +183,22 @@ def poster_response(poster_id):
                 show_conlines = response_data.get('show_conlines'),
                 map_background = response_data.get('map_background'),
             )
-
+            # Add Response to Poster and commit to db
             p.response = r
             db.session.add(p)
             db.session.add(r)
             db.session.commit()
             return jsonify(r.dict), 200
         else:
+            # if Poster has response, tell user to PATCH instead
             return {'error': 'Response exists, please use PATCH instead.'}, 409
     
     if request.method == 'PATCH':
-        p = Poster.query.filter_by(id=poster_id).first()
+        # PATCH the Response for the specified Poster
+        # Get the id of the response from the Poster
         response_id = p.response.id
 
-        # Use request json to update multiple columns simultaneously for one response
+        # Use request json to update multiple columns simultaneously for one Response
         try:
             Response.query.filter_by(id=response_id).update(request.get_json())
         except sqlalchemy.exc.InvalidRequestError:
@@ -201,7 +206,7 @@ def poster_response(poster_id):
 
         db.session.commit()
 
-        # Get revised blogpost so it can be returned
+        # Get revised Response so it can be returned
         r = Response.query.filter_by(id=response_id).first()
     
         if r is None:
