@@ -73,6 +73,7 @@ class Poster(db.Model):
     image = db.Column(db.String(50), unique=False, nullable=True)
     # Status Booleans
     responded = db.Column(db.Boolean, unique=False, nullable=False, default=False)
+    approved = db.Column(db.Boolean, unique=False, nullable=False, default=False)
     made = db.Column(db.Boolean, unique=False, nullable=False, default=False)
     sent = db.Column(db.Boolean, unique=False, nullable=False, default=False)
     # Relationships
@@ -99,6 +100,8 @@ class Poster(db.Model):
         return {
             'id': self.id,
             'image': self.image,
+            'responded': self.responded,
+            'approved': self.approved,
             'made': self.made,
             'sent': self.sent,
             'transaction_id': self.transaction_id,
