@@ -31,7 +31,7 @@ class Transaction(db.Model):
     # Direct Transaction Info
     timestamp = db.Column(db.DateTime, unique=False, nullable=False)
     sku = db.Column(db.String(20), unique=False, nullable=False)
-    receipt_id = db.Column(db.Integer, unique=True, nullable=False)
+    receipt_id = db.Column(db.Integer, unique=False, nullable=False)
     quantity = db.Column(db.Integer, unique=False, nullable=False)
     # Status Booleans
     shipped = db.Column(db.Boolean, unique=False, nullable=False, default=False)
