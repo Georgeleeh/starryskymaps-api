@@ -70,6 +70,13 @@ def get_buyer(buyer_id):
         b = Buyer.query.filter_by(id=buyer_id).first()
         return jsonify(b.dict), 200
 
+@app.route('/buyer/<buyer_id>/transaction', methods=['GET'])
+def get_buyer_transactions(buyer_id):
+    # Return all Transactions from specified Buyer
+    if request.method == 'GET':
+        ts = Transaction.query.filter_by(buyer_id=buyer_id).all()
+        return jsonify([t.dict for t in ts]), 200
+
 
 # ---------------------------------- TRANSACTION ---------------------------------- #
 
