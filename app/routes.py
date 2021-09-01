@@ -42,7 +42,7 @@ def add_transaction_and_others(etsy_transaction, E=Etsy()):
     # Create each Poster required for the Transaction
     for i in range(t.quantity):
         p = Poster(
-            sent=etsy_transaction['shipped_tsz'] is None,
+            sent=etsy_transaction['shipped_tsz'] is not None,
             transaction_id=t.id
         )
         db.session.add(p)
