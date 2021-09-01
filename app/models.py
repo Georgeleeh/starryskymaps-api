@@ -19,7 +19,7 @@ class Buyer(db.Model):
             'id': self.id,
             'etsy_email': self.etsy_email,
             'updated_email': self.updated_email,
-            'transactions': [t.id for t in self.transactions],
+            'transactions': [t.dict for t in self.transactions],
             # Extra properties worth returning
             'contact_email': self.updated_email if self.updated_email is not None else self.etsy_email
         }
@@ -63,7 +63,7 @@ class Transaction(db.Model):
             'quantity': self.quantity,
             'shipped': self.shipped,
             'buyer_id': self.buyer_id,
-            'posters': [p.id for p in self.posters]
+            'posters': [p.dict for p in self.posters]
         }
 
 
