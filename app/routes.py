@@ -35,7 +35,7 @@ def add_transaction_and_others(etsy_transaction, E=Etsy()):
         sku = etsy_transaction['product_data']['sku'],
         receipt_id = etsy_transaction['receipt_id'],
         quantity = etsy_transaction['quantity'],
-        shipped = etsy_transaction['shipped_tsz'] is None,
+        shipped = etsy_transaction['shipped_tsz'] is not None,
         buyer_id=b.id
     )
 
