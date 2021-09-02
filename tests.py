@@ -98,7 +98,7 @@ print()
 transaction = all_transactions[0]
 transaction_id = transaction['id']
 buyer_id = transaction['buyer_id']
-poster_id = transaction['posters'][0]
+poster_id = transaction['posters'][0]['id']
 
 # Get transaction
 print(f"Get transaction {transaction_id}\n")
