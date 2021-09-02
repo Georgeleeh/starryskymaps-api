@@ -141,6 +141,17 @@ def transaction(transaction_id):
         db.session.commit()
         return {'success' : 'Transaction and orphaned dependents deleted'}, 200
 
+@app.route('/transaction/<transaction_id>/mark_shipped', methods=['PATCH'])
+def mark_transaction_shipped(transaction_id):
+    # Return specified Transaction as dict
+    if request.method == 'PATCH':
+        t = Transaction.query.filter_by(id=transaction_id).first()
+        t.shipped = not t.shipped
+        for p in t.posters:
+            p.sent = not p.sent
+        db.session.commit()
+        return {'success' : 'Transaction and child Posters marked shipped and sent'}, 200
+
 
 # ---------------------------------- POSTER ---------------------------------- #
 
