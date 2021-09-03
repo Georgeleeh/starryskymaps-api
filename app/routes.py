@@ -229,6 +229,15 @@ def poster_response(poster_id):
 
         return jsonify(r.dict), 200
 
+@app.route('/poster/<poster_id>/mark_approved', methods=['PATCH'])
+def poster_approved(poster_id):
+    # Mark specified Poster as approved
+    if request.method == 'PATCH':
+        t = Poster.query.filter_by(id=poster_id).first()
+        t.approved = True
+        db.session.commit()
+        return {'success' : 'Poster marked approved'}, 200
+
 
 # ---------------------------------- RESPONSE ---------------------------------- #
 
