@@ -76,6 +76,7 @@ class Poster(db.Model):
     approved = db.Column(db.Boolean, unique=False, nullable=False, default=False)
     made = db.Column(db.Boolean, unique=False, nullable=False, default=False)
     sent = db.Column(db.Boolean, unique=False, nullable=False, default=False)
+    edit_requested = db.Column(db.Boolean, unique=False, nullable=False, default=False)
     # Relationships
     transaction_id = db.Column(db.Integer, db.ForeignKey('transaction.id'), nullable=False)
     response = db.relationship('Response', backref='poster', uselist=False)
@@ -104,6 +105,7 @@ class Poster(db.Model):
             'approved': self.approved,
             'made': self.made,
             'sent': self.sent,
+            'edit_requested': self.edit_requested,
             'transaction_id': self.transaction_id,
             'response_id': self.response.id if self.response is not None else None
         }

@@ -4,6 +4,9 @@ from flask import jsonify, request
 from datetime import datetime
 from Etsy import Etsy
 import sqlalchemy
+import smtplib, ssl, os
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 
 
 @app.route('/')
@@ -52,6 +55,30 @@ def add_transaction_and_others(etsy_transaction, E=Etsy()):
     db.session.commit()
     
     return t
+
+def sendemail(receiver_email, subject, text):
+    sender_email = os.environ['EMAIL_ADDRESS']
+    password = os.environ['EMAIL_PASSWORD']
+
+    # Try to log in to server and send email
+    try:
+        server = smtplib.SMTP("smtp.gmail.com",587)
+        server.starttls(context=ssl.create_default_context()) # Secure the connection
+        server.login(sender_email, password)
+
+        message = MIMEMultipart("alternative")
+        message["Subject"] = subject
+        message["From"] = sender_email
+        message["To"] = receiver_email
+
+        message.attach(MIMEText(text, "plain"))
+
+        server.sendmail(sender_email, receiver_email, message.as_string())
+    except Exception as e:
+        # Print any error messages to stdout
+        print(e)
+    finally:
+        server.quit() 
 
 
 # ---------------------------------- BUYER ---------------------------------- #
@@ -237,6 +264,33 @@ def poster_approved(poster_id):
         t.approved = True
         db.session.commit()
         return {'success' : 'Poster marked approved'}, 200
+
+@app.route('/poster/<poster_id>/request_edit', methods=['PATCH'])
+def poster_request_edit(poster_id):
+    # Return Response for specified Poster as dict
+    if request.method == 'PATCH':
+        p = Poster.query.filter_by(id=poster_id).first()
+        text = request.json['text']
+        email = os.environ['EMAIL_ADDRESS']
+
+        message = f"""\
+            Hello Me, 
+
+            poster_id = {poster_id}
+            edit_requested:
+            
+            {text}
+
+            Now go do.
+            """
+
+        sendemail(email, 'Edit Request Received', message)
+        
+        p.edit_requested = True
+        db.session.commit()
+
+        return {'success' : 'Edit request received'}, 200
+
 
 
 # ---------------------------------- RESPONSE ---------------------------------- #
