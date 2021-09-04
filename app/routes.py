@@ -254,6 +254,11 @@ def poster_response(poster_id):
         # Get the id of the response from the Poster
         response_id = p.response.id
 
+        changes = request.get_json()
+
+        if changes.get('map_datetime'):
+            changes['map_datetime'] = datetime.fromtimestamp(changes['map_datetime'])
+
         # Use request json to update multiple columns simultaneously for one Response
         try:
             Response.query.filter_by(id=response_id).update(request.get_json())
