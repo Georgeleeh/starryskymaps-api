@@ -140,7 +140,7 @@ class Response(db.Model):
         return {
             'id': self.id,
             'timestamp': self.timestamp,
-            'map_datetime': self.map_datetime,
+            'map_datetime': self.map_datetime.timestamp(),
             'map_written_datetime': self.map_written_datetime,
             'message': self.message,
             'map_written_address': self.map_written_address,
