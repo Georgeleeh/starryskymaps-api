@@ -7,6 +7,9 @@ import sqlalchemy
 import smtplib, ssl, os
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+from PIL import Image
+from cairosvg import svg2png
+from io import BytesIO
 
 
 @app.route('/')
@@ -80,6 +83,17 @@ def sendemail(receiver_email, subject, text):
     finally:
         server.quit() 
 
+# ---------------------------------- STARMAP ---------------------------------- #
+
+@app.route('/starmap/export', methods=['POST'])
+def starmap_export():
+    r = request.json
+    svg_data = r['data']
+    png = svg2png(bytestring=svg_data,dpi=300,scale=5)
+    pil_img = Image.open(BytesIO(png))
+    pil_img.save('test.png')
+
+    return {'success' : 'all good!'}, 200
 
 # ---------------------------------- BUYER ---------------------------------- #
 
