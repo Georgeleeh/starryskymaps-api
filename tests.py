@@ -152,8 +152,9 @@ post_response = {
             }
 
 modified_response = {
-            'latitude': 3.0,
-            'longitude': 4.0,
+            'map_datetime': datetime(2019, 4, 1).timestamp(),
+            'latitude': 40.7142700,
+            'longitude': -74.0059700,
             'colour': 'Black',
             'font': 'Snell Roundhand'
             }
