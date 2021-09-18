@@ -85,13 +85,13 @@ def sendemail(receiver_email, subject, text):
 
 # ---------------------------------- STARMAP ---------------------------------- #
 
-@app.route('/starmap/export', methods=['POST'])
-def starmap_export():
+@app.route('/starmap/export/<poster_id>', methods=['POST'])
+def starmap_export(poster_id):
     r = request.json
     svg_data = r['data']
-    png = svg2png(bytestring=svg_data,dpi=300,scale=5)
+    png = svg2png(bytestring=svg_data,dpi=300,output_width=4000, output_height=4000)
     pil_img = Image.open(BytesIO(png))
-    pil_img.save('test.png')
+    pil_img.save(f'{poster_id}.png')
 
     return {'success' : 'all good!'}, 200
 
