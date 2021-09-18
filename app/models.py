@@ -107,7 +107,7 @@ class Poster(db.Model):
             'sent': self.sent,
             'edit_requested': self.edit_requested,
             'transaction_id': self.transaction_id,
-            'response_id': self.response.id if self.response is not None else None
+            'response': self.response.dict if self.response is not None else None
         }
 
 
