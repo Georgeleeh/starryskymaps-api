@@ -91,7 +91,7 @@ def starmap_export(poster_id):
     svg_data = r['data']
     png = svg2png(bytestring=svg_data,dpi=300,output_width=4000, output_height=4000)
     pil_img = Image.open(BytesIO(png))
-    pil_img.save(f'{poster_id}.png')
+    pil_img.save(f'app/static/map_pngs/{poster_id}.png')
 
     return {'success' : 'all good!'}, 200
 
